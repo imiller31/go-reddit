@@ -8,6 +8,7 @@ type streamConfig struct {
 	Interval       time.Duration
 	DiscardInitial bool
 	MaxRequests    int
+	Filter         string
 }
 
 // StreamOpt is a configuration option to configure a stream.
@@ -35,6 +36,12 @@ func StreamMaxRequests(v int) StreamOpt {
 		if v > 0 {
 			c.MaxRequests = v
 		}
+	}
+}
+
+func StreamFilter(filter string) StreamOpt {
+	return func(c *streamConfig) {
+		c.Filter = filter
 	}
 }
 

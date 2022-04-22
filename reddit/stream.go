@@ -2,6 +2,7 @@ package reddit
 
 import (
 	"context"
+	"strings"
 	"sync"
 	"time"
 )
@@ -71,6 +72,11 @@ func (s *StreamService) Posts(subreddit string, opts ...StreamOpt) (<-chan *Post
 				if ids.Exists(id) {
 					break
 				}
+				if streamConfig.Filter != "" &&
+					(!strings.Contains(post.Body, streamConfig.Filter) || !strings.Contains(post.Title, streamConfig.Filter)) {
+					break
+				}
+				
 				ids.Add(id)
 
 				if streamConfig.DiscardInitial {
